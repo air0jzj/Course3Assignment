@@ -1,0 +1,166 @@
+
+
+# Codebook Description of data cleaned by the Run_analysis R sript
+
+## Description of Source Data
+
+The data for this script comes from accelerometers from Samsung Galaxy S Smartphones. The data comes from smartphones
+given to a group of 30 subjects grouped in two seperate groups a training group and a test group. The  subjects were
+asked to perform 6 seprate movements that were performed to produce measurements form the accelerometers. The movements
+are listed below:
+
+* Walking
+* Walking Upstairs
+* Walking Downstairs
+* Sitting
+* Standing
+* Laying
+
+A full description of the data set and experiment can be found at the following link
+
+[Full Description]([http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
+
+The source for this data can be accessed from the link below
+
+[Data source] (https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip)
+
+
+## Needed data files and placement of files for Script to function
+
+The data is contained in a zip file.
+Unzip the file into your root directory it will create a folder called UCI HAR Dataset
+You will need to place the following files in your root directory
+
+### From the UCI HAR Dataset folder
+
+* activity_labels.txt  *Contains the movement descriptions*
+* features.txt         *Contains the column headings for the entire dataset*
+
+### From the UCI HAR Dataset/test folder
+
+* subject_test.txt     *Contains the subject id number for each observation in the X_test.txt data*
+* x_test.txt           *Contains all the accelerometer measurements for the test subset of the 30 subjects*
+* y_test.txt           *Contains the movement id number for each obervation in the x_test.txt data*
+
+### From the UCI HAR Dataset/train folder
+
+* subject_train.txt   *Contains the subject id number for each observation in the X_train.txt data*
+* x_train.txt         *Contains all the accelerometer measurements for the test subset of the 30 subjects*
+* y_train.txt         *Contains the movement id number for each obervation in the x_test.txt data*
+
+## Description of Run_analysis R-Script
+
+The primary data set is comprised of 560 recorded variables for coming from Accelerometers and Gyroscopes.
+These variables cover a wide range of statistics.
+
+This script is designed to par down these variables to only include Variables that contain Mean and 
+standard deviation Data
+
+The following is a listing of steps that the script progresses throught to create its output
+the output is loaded into the root directory in a file label Fitbit_data.csv
+
+1. Determine which fields are mean and standard deviation fields
+    + Upload Features.txt into R
+    + find column headers that contain either the phrase mean() or std()
+    + load these column headers names into a column labels list
+    + Load the column numbers into a list called keep
+2. Import data from X_test.txt and apply meaningful column labels
+    + Import the file X_test.txt into R but using the list called Keep to only bring in the desired colums
+    + relable the column names using the column labels list created in step 1
+3. Associate Subject ID to the observations
+    + Import the file subject_test.txt into R
+    + Merge this data with the data from x_test, providing visibility of which subject generated the observation
+4. Associate Movement Id to the Observations
+    + Import the file activity_labels.txt into R
+    + Import the file Y_test.txt into R
+    + Merge the activity_labels data, y_test data and the X_test data to provide visibility to the movement that was being performed when the observation was captured
+5. Repeat steps 2,3,4 using the Train data 
+6. Merge the test data set and the train data set into a single data set that now contains all observations and provides detail to what movement was being performed and what subject was doing the motion when the observation was captured
+7. Export this data stored in a CSV file called fitbit_data.csv
+8. Summarized this data by taking the mean of each parameter column grouped by Subject ID and Movement ID
+9. Export this data stored in a csv file called fitbit_data_summarize.csv
+
+## Column Description of Fitbit_data.csv
+
+* rowid: *Observation number ordered sequentially*
+* tBodyAcc_mean_X: * Average Body Accellerometer reading of accelleration along the x-axis*
+* tBodyAcc_mean_Y: * Average Body Accellerometer reading of accelleration along the y-axis*
+* tBodyAcc_mean_Z: *Average Body Accellerometer reading of accelleration along the z-axis*
+* tBodyAcc_std_X: *Stand Deviation of the Body Accellerometer reading of accelleration along the x-axis*
+* tBodyAcc_std_Y: *Stand Deviation of the Body Accellerometer reading of accelleration along the y-axis*
+* tBodyAcc_std_Z: *Stand Deviation of the Body Accellerometer reading of accelleration along the Z-axis*
+* tGravityAcc_mean_X: *average gravity accellerometer reading of accelleration along the x-axis*
+* tGravityAcc_mean_y: *average gravity accellerometer reading of accelleration along the y-axis*
+* tGravityAcc_mean_z: *average gravity accellerometer reading of accelleration along the z-axis*
+* tGravityAcc_std_X: *Standard Deviation of the gravity accelerometer reading of accelleration along the x-axis*
+* tGravityAcc_std_y: *Standard Deviation of the gravity accelerometer reading of accelleration along the y-axis*
+* tGravityAcc_std_z: *Standard Deviation of the gravity accelerometer reading of accelleration along the z-axis*
+* tBodyAccJerk_mean_X: *Average Body Accelerometer reading of Jerk along the x-axis*
+* tBodyAccJerk_mean_y: *Average Body Accelerometer reading of Jerk along the y-axis*
+* tBodyAccJerk_mean_z: *Average Body Accelerometer reading of Jerk along the z-axis*
+* tBodyAccJerk_std_X: *Standard Deviation of the Body Accellerometer reading of Jerk along the x-axis*
+* tBodyAccJerk_std_y: *Standard Deviation of the Body Accellerometer reading of Jerk along the y-axis*
+* tBodyAccJerk_std_z: *Standard Deviation of the Body Accellerometer reading of Jerk along the z-axis*
+* tBodyGyro_mean_X: *Average Body Gyroscope reading of acceleration along the X-axis*
+* tBodyGyro_mean_y: *Average Body Gyroscope reading of acceleration along the y-axis*
+* tBodyGyro_mean_z: *Average Body Gyroscope reading of acceleration along the z-axis*
+* tBodyGyro_std_X: *Standard Deviation of the Body Gyroscope reading of acceleration along the x-axis*
+* tBodyGyro_std_y: *Standard Deviation of the Body Gyroscope reading of acceleration along the y-axis*
+* tBodyGyro_std_z: *Standard Deviation of the Body Gyroscope reading of acceleration along the z-axis*
+* tBodyGyroJerk_mean_X: *Average Body Gyroscope reading of jerk along the x-axis*
+* tBodyGyroJerk_mean_y: *Average Body Gyroscope reading of jerk along the y-axis*
+* tBodyGyroJerk_mean_z: *Average Body Gyroscope reading of jerk along the z-axis*
+* tBodyGyroJerk_std_X: *Standard Deviation of the body Gyroscope reading of Jerk along the x-axis*
+* tBodyGyroJerk_std_y: *Standard Deviation of the body Gyroscope reading of Jerk along the y-axis*
+* tBodyGyroJerk_std_z: *Standard Deviation of the body Gyroscope reading of Jerk along the z-axis*
+* tBodyAccMag_mean: *Average Magnitude reading of the body Accelerometer*
+* tBodyAccMag_std: *Standard Deviation of the Magnitude reading of the body accelerometer*
+* tGravityAccMag_mean: *Average Magnitude reading of the Gravity accelerometer*
+* tGravityAccMag_std: *Standard Deviation of the Magnitude readings of the Gravity accelerometer*
+* tBodyAccJerkMag_mean: *Average Jerk readings of the body Accelerometer*
+* tBodyAccJerkMag_std: *Standard Deviation of the Jerk Readings of the body Accelerometer*
+* tBodyGyroMag_mean: *Average Magnitude readings from the Body Gyroscope*
+* tBodyGyroMag_std: *Standard Deviation of the Magnitude readings from the Body Gyroscope*
+* tBodyGyroJerkMag_mean: *Average Jerk Magnitude readings from the Body Gyroscope*
+* tBodyGyroJerkMag_std: *Standard Deviation of the Jerk Magnitude readings from the Body Gyroscope*
+* fBodyAcc_mean_X: *Average Acceleration Frequency Domain signal from the body accelerometer along the x-axis*
+* fBodyAcc_mean_y: *Average Acceleration Frequency Domain signal from the body accelerometer along the y-axis*
+* fBodyAcc_mean_z: *Average Acceleration Frequency Domain signal from the body accelerometer along the z-axis*
+* fBodyAcc_std_X: *Standard Deviation of the Acceleration Frequency Domain signal from the body accelerometer along the x-axis*
+* fBodyAcc_std_y: *Standard Deviation of the Acceleration Frequency Domain signal from the body accelerometer along the y-axis*
+* fBodyAcc_std_z: *Standard Deviation of the Acceleration Frequency Domain signal from the body accelerometer along the z-axis*
+* fBodyAccJerk_mean_X: *Average Jerk Frequency Domain signal from the body accelerometer along the x-axis*
+* fBodyAccJerk_mean_y: *Average Jerk Frequency Domain signal from the body accelerometer along the y-axis*
+* fBodyAccJerk_mean_z: *Average Jerk Frequency Domain signal from the body accelerometer along the z-axis*
+* fBodyAccJerk_std_X: *Standard Deviation of the Jerk Frequency Domain signal from the body accelerometer along the x-axis*
+* fBodyAccJerk_std_y: *Standard Deviation of the Jerk Frequency Domain signal from the body accelerometer along the y-axis*
+* fBodyAccJerk_std_z: *Standard Deviation of the Jerk Frequency Domain signal from the body accelerometer along the z-axis*
+* fBodyGyro_mean_X: *Average Acceleration Frequency Domain signal from the body Gyroscope along the x-axis*
+* fBodyGyro_mean_y: *Average Acceleration Frequency Domain signal from the body Gyroscope along the y-axis*
+* fBodyGyro_mean_z: *Average Acceleration Frequency Domain signal from the body Gyroscope along the z-axis*
+* fBodyGyro_std_X: *Standard Deviation of the Acceleration Frequency Domain signal from the body Gyroscope along the x-axis*
+* fBodyGyro_std_y: *Standard Deviation of the Acceleration Frequency Domain signal from the body Gyroscope along the y-axis*
+* fBodyGyro_std_z: *Standard Deviation of the Acceleration Frequency Domain signal from the body Gyroscope along the z-axis*
+* fBodyAccMag_mean: *Acceleration Magnitude of the Frequency Domain Signal from the Body Accelerometer*
+* fBodyAccMag_std: *Standard Deviation Acceleration Magnitude of the Frequency Domain Signal from the Body Acceleromter*
+* fBodyBodyAccJerkMag_mean: *Average Jerk Magnitude of the Frequency Domain Signal from the Body Accelerometer
+* fBodyBodyAccJerkMag_std: *Standard Deviation of the Jerk Magnitude Frequency Domain Signals from the Body Accelerometer*
+* fBodyBodyGyroMag_mean: *Average of the Magnitude Frequency Domain Signals from the Body Gyroscope*
+* fBodyBodyGyroMag_std: *Standard Deviation of the Magnitude Frequency domain Signals from the Body Gyroscope*
+* fBodyBodyGyroJerkMag_mean: *Average Jerk Magnitude of the frequency domain Signal from the Body Gyroscope*
+* fBodyBodyGyroJerkMag_std: *Standard Deviation of the Jerk Magnitude of the Frequency Domain Signal from the Body Gyroscope*
+* Subject ID: *Identification number of the subject who these readings were recorded for*
+* ID: *Movement description of the activty being performed when this reading was recorded*
+
+
+## Column Description of Fitbit_data_Summary.csv
+
+This file summarizes the data from the Fitbit_data file.
+
+Each variable column is summarized by taking the mean of the observations. The variables are summarized by grouping
+records by Subject ID and Id giving an average for each paramter for every subject (1-30) and every movement type(6) for a total of 180 rows of summarized data. Fields are in the same order as the fitbit_data file.
+
+    
+
+
+
